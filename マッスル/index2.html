@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像とボタン</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 100%;
+            max-height: 80%; /* 画像が画面の8割までに収まるよう設定 */
+            object-fit: contain;
+            border: 2px solid #333;
+            border-radius: 8px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 表示する画像 -->
+    <img src="marry.jpg" alt="表示する画像">
+
+    <!-- ボタン -->
+    <button onclick="goToNextPage()">次の画面へ</button>
+
+    <script>
+        // ボタンをクリックしたら別の画面に遷移
+        function goToNextPage() {
+            window.location.href = "index3.html"; // 遷移先のページを指定
+        }
+    </script>
+</body>
+</html>

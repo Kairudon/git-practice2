@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漢字読みゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .card {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .kanji {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        input {
+            padding: 10px;
+            font-size: 1rem;
+            width: 80%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input.shake {
+            animation: shake 0.3s ease;
+            border-color: red;
+        }
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin: 20px 0;
+            font-size: 1.2rem;
+        }
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #555;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>漢字読みゲーム</h1>
+        <div class="kanji" id="kanji">一石二鳥</div>
+        <div class="timer" id="timer">30</div>
+        <input type="text" id="answer" placeholder="読みを入力" />
+        <button onclick="checkAnswer()">回答する</button>
+        <div class="result" id="result"></div>
+        <button onclick="nextQuestion()" style="display:none;" id="nextBtn">次の問題へ</button>
+    </div>
+
+    <script>
+        // 問題のリスト
+        const questions = [
+            { kanji: "一石二鳥", reading: "いっせきにちょう" },
+            { kanji: "是非", reading: "ぜひ" },
+            { kanji: "温故知新", reading: "おんこちしん" },
+            { kanji: "七転八起", reading: "しちてんはっき" },
+            { kanji: "十人十色", reading: "じゅうにんといろ" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 30;
+
+        // 現在の問題をセット
+        function setQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('kanji').textContent = question.kanji;
+            document.getElementById('answer').value = '';
+            document.getElementById('answer').classList.remove('shake');
+            document.getElementById('result').textContent = '';
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('timer').textContent = timeLeft;
+
+            // タイマー開始
+            startTimer();
+        }
+
+        // タイマーの処理
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 30;
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    showTimeout();
+                }
+            }, 1000);
+        }
+
+        // 時間切れの処理
+        function showTimeout() {
+            const correctAnswer = questions[currentQuestionIndex].reading;
+            document.getElementById('result').textContent = `時間切れ！正解は「${correctAnswer}」でした。`;
+            document.getElementById('result').style.color = 'red';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        // 回答をチェック
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer').value.trim();
+            const correctAnswer = questions[currentQuestionIndex].reading;
+            const resultDiv = document.getElementById('result');
+            const answerInput = document.getElementById('answer');
+
+            if (userAnswer === correctAnswer) {
+                clearInterval(timer); // タイマーをクリア
+                resultDiv.textContent = '正解！';
+                resultDiv.style.color = 'green';
+                score++;
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else {
+                resultDiv.textContent = `不正解... もう一度入力してください。`;
+                resultDiv.style.color = 'red';
+                answerInput.classList.add('shake');
+                setTimeout(() => {
+                    answerInput.classList.remove('shake');
+                }, 300);
+            }
+        }
+
+        // 次の問題へ
+        function nextQuestion() {
+            clearInterval(timer); // タイマーをクリア
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                setQuestion();
+            } else {
+                document.querySelector('.card').innerHTML = `<h2>ゲーム終了！</h2><p>あなたのスコアは ${score} / ${questions.length} でした！</p>`;
+            }
+        }
+
+        // 初期設定
+        setQuestion();
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寄り目 or 左を見てる？</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        h1 { font-size: 40px; }
+        p { font-size: 30px; }
+        img { max-width: 80%; height: auto; margin: 20px; }
+        .buttons { margin-top: 20px; }
+        button { font-size: 20px; padding: 10px 20px; margin: 10px; cursor: pointer; }
+        #result { font-size: 24px; font-weight: bold; }
+        .image-container { position: relative; display: inline-block; overflow: hidden; }
+        .mask { 
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            width: 50%; 
+            height: 100%; 
+            background: white; 
+            transition: right 1s ease;
+        }
+        #gameArea { display: none; }
+        #openingScreen { display: block; }
+        #scoreScreen { display: none; }
+    </style>
+</head>
+<body>
+    <div id="openingScreen">
+        <h1>目がどっち向いているかゲーム</h1>
+        <p>表示される画像の人物が「寄り目」なのか「左を見ている」のかを当ててください！</p>
+        <p>エンターキーを押してゲームを開始！</p>
+    </div>
+    
+    <div id="gameArea">
+        <h1>寄り目 or めっちゃ左を見てる？</h1>
+        <div class="image-container">
+            <img id="gameImage" src="" alt="判定する画像" style="visibility: hidden;">
+            <div class="mask" id="mask"></div>
+        </div>
+        <div class="buttons">
+            <button onclick="judge('crossed')">寄り目</button>
+            <button onclick="judge('left')">めっちゃ左</button>
+        </div>
+        <p id="result"></p>
+    </div>
+    
+    <div id="scoreScreen">
+        <h1>ゲーム終了！</h1>
+        <p id="finalScore"></p>
+        <button onclick="location.href='index2.html'">スコア画面へ</button>
+    </div>
+    
+    <script>
+        let images = [
+            { src: 'image4.jpg', answer: 'left' },
+            { src: 'image3.jpg', answer: 'crossed' },
+            { src: 'image2.jpg', answer: 'crossed' },
+            { src: 'image4.jpg', answer: 'left' },
+            { src: 'image8.jpg', answer: 'crossed' },
+            { src: 'image6.jpg', answer: 'left' },
+            { src: 'image5.jpg', answer: 'crossed' }
+        ];
+        let currentIndex = 0;
+        let score = 0;
+
+        function showNextImage() {
+            if (currentIndex >= images.length) {
+                document.getElementById('gameArea').style.display = 'none';
+                document.getElementById('scoreScreen').style.display = 'block';
+                document.getElementById('finalScore').innerText = `あなたのスコア: ${score}/${images.length}`;
+                return;
+            }
+            let imgElement = document.getElementById('gameImage');
+            let maskElement = document.getElementById('mask');
+            
+            imgElement.style.visibility = 'hidden';
+            imgElement.src = images[currentIndex].src;
+            maskElement.style.right = '0%'; // 毎回リセットして右側を隠す
+            
+            setTimeout(() => {
+                imgElement.style.visibility = 'visible';
+            }, 200); // 画像が完全に切り替わる前に表示しない
+        }
+
+        function judge(choice) {
+            if (choice === images[currentIndex].answer) {
+                score++;
+                document.getElementById('result').innerText = '正解！';
+            } else {
+                document.getElementById('result').innerText = '不正解…';
+            }
+            document.getElementById('mask').style.right = '-50%';
+            currentIndex++;
+            setTimeout(showNextImage, 2000);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                document.getElementById('openingScreen').style.display = 'none';
+                document.getElementById('gameArea').style.display = 'block';
+                showNextImage();
+            }
+        });
+    </script>
+</body>
+</html>

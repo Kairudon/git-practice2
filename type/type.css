@@ -1,0 +1,21 @@
+#start{
+  font-size: 60px;
+  margin-top: 30px;
+  text-align: center;
+}
+
+#japanese{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 150px;
+}
+
+#input {
+  font-size: 18px;
+  padding: 5px;
+}
+
+#score {
+  font-size: 18px;
+  margin-top: 10px;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="type.css">
+</head>
+<!-- ↓ここから見える部分↓ -->
+<body>
+
+<h1 id="japanese" class="text"></h1>
+<h1 id="start" class="text">ボタンを押してゲームスタート！</h1>
+
+<script>
+  let Q = ["a","banana","suika","iruka","baka","baka","rebekaeirireibo-nn","tobesennseihadokodesuka","sokoniiruttekotodesuka","onazikotokiitemasuyone","isimaru","sennkyoniikou","takesimahanihonnnomono","momo"];
+  let QJ=["a","バナナ","すいか","海豚","馬鹿","青学","レベッカ・英里・レイボーン","戸辺先生はどこですか？","そこにいるってことですか？","同じこと聞いてますよね？","堂々巡りなってないですか？","選挙に行こう","竹島は日本のもの","もも"]
+
+  let Q_No = 0; // 問題を順番に出題する
+
+  let Q_i = 0;
+  let Q_l = Q[Q_No].length;
+
+  window.addEventListener("keydown", push_Keydown);
+
+  function push_Keydown(event){
+    let keyCode = event.key;
+    if (Q_No >= Q.length) {
+      // ゲーム終了メッセージを表示
+      document.getElementById("start").innerHTML = "ゲーム終了！";
+      document.getElementById("japanese").innerHTML = "";
+      return;
+    }
+
+    if (Q_l == Q_l-Q_i){
+      document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+      document.getElementById("japanese").innerHTML = QJ[Q_No];
+    }
+
+    if (Q[Q_No].charAt(Q_i) == keyCode) {
+      let audio = new Audio('audio.mp3'); 
+      audio.play();
+
+      Q_i++;
+      document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+      document.getElementById("japanese").innerHTML = QJ[Q_No];
+
+      if (Q_l-Q_i === 0){
+        Q_No++;
+        if (Q_No >= Q.length) {
+          // ゲーム終了メッセージを表示
+          let audio = new Audio('audio3.mp3'); 
+          audio.play();
+          document.getElementById("start").innerHTML = "ゲーム終了！";
+          document.getElementById("japanese").innerHTML = "";
+          return;
+        }
+        Q_i = 0;
+        Q_l = Q[Q_No].length;
+        document.getElementById("start").innerHTML = Q[Q_No].substring(Q_i, Q_l);
+        document.getElementById("japanese").innerHTML = QJ[Q_No];
+      }
+    }
+    else{
+      let audio = new Audio('audio2.mp3'); 
+      audio.play();
+    }
+  }
+</script>
+</body>
+</html>

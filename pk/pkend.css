@@ -1,0 +1,22 @@
+button {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+#my-image {
+  width: 80%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+  height: auto;
+}
