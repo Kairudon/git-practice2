@@ -6,3 +6,4 @@ git pra3
 hello from main and brach
 
 pra stash
+VScode pra
